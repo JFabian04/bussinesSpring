@@ -38,14 +38,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Manejo de excepciones personalizadas (Ejemplo: Product not found)
+    // Manejo de excepciones personalizadas
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Object>> handleProductNotFound(ProductNotFoundException ex) {
         ResponseWrapper<Object> response = new ResponseWrapper<>(null, ex.getMessage(), 404);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Manejo de excepciones de base de datos (Ejemplo: ConstraintViolationException)
+    // Manejo de excepciones de base de datos
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ResponseWrapper<Object>> handleDatabaseExceptions(DataIntegrityViolationException ex) {
         ResponseWrapper<Object> response = new ResponseWrapper<>(null, "Database error: " + ex.getMessage(), 400);

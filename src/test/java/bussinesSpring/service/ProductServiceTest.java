@@ -28,7 +28,7 @@ public class ProductServiceTest {
     @Test
     public void testGetProductById_Success() {
         Long productId = 1L;
-        Product mockProduct = new Product(); //
+        Product mockProduct = new Product();
         mockProduct.setId(productId);
         mockProduct.setName("Product Name");
         mockProduct.setDescription("Description product");

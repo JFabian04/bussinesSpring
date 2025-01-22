@@ -1,9 +1,19 @@
 package bussinesSpring.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
+@SQLDelete(sql = "UPDATE products SET deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLRestriction("deleted = false")
+@Getter
+@Setter
 public class Product {
 
     @Id
@@ -13,36 +23,9 @@ public class Product {
     private String description;
     private Double price;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }

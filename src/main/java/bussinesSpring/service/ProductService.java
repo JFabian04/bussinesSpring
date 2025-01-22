@@ -4,6 +4,7 @@ import bussinesSpring.dto.ProductDTO;
 import bussinesSpring.exception.ProductNotFoundException;
 import bussinesSpring.model.Product;
 import bussinesSpring.repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +18,16 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     // Convertir Entidad Product a ProductDTO
     private ProductDTO convertToDTO(Product product) {
-        return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice());
+        return modelMapper.map(product, ProductDTO.class);
     }
 
     // Convertir ProductDTO a Entidad Product
     private Product convertToEntity(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setId(productDTO.getId());
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        return product;
+        return modelMapper.map(productDTO, Product.class);
     }
 
     //Listar productos
@@ -52,7 +50,7 @@ public class ProductService {
         return convertToDTO(product);
     }
 
-    //Actualizar nuev porducto.
+    //Actualizar nuevo producto.
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Registro con id " + id + " no encontrado"));
@@ -65,7 +63,7 @@ public class ProductService {
         return convertToDTO(updatedProduct);
     }
 
-    //Eliminado Logica del producto referencia por ID principal
+    //Eliminado Logico del producto por ID principal
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException("Registro con id " + id + " no encontrado");
